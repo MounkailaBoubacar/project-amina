@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4">Produit index</h1>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.id }}</td>
+                    <td>{{ produit.nom }}</td>
+                    <td>{{ produit.prix }}</td>
+                    <td>
+                        {% if produit.categorie %}
+                            {{ produit.categorie.nom }} {# Adjust this line based on how you can access the category name in your entity #}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+      {% if show %}
+                {% if produit.id in produitsUtilisateur %}
+                    <button title="clique pour retirer"  class="btn btn-sm btn-danger" disabled> Deja ajouter</button>
+
+                {% else %}
+
+                    <a href="{{ path('ajouter_produit', {'id': produit.id}) }}" class="btn btn-sm btn-success">Ajouter à ma liste</a>
+                {% endif %}
+
+     {% else %}
+         <a title="clique pour retirer" href="{{ path('retirer_produit', {'id': produit.id}) }}" class="btn btn-sm btn-danger" >Retirer le Produit</a>
+
+    {% endif %}
+                        <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                        <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                </tr>
+     {% else %}
+                <tr>
+                    <td colspan="5">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_produit_new') }}" class="btn btn-success">Create new</a>
+    </div>
+{% endblock %}
